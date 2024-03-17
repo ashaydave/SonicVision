@@ -1,0 +1,93 @@
+addpath('C:\Users\ashay\Documents\UMFrost\Thesis\MATLAB');
+
+inDir = fullfile('/Users', 'ashay', 'Documents',...
+    'UMFrost', 'Thesis', 'MATLAB', 'Audio');
+outDir = fullfile('/Users', 'ashay', 'Documents',...
+    'UMFrost', 'Thesis', 'MATLAB', 'Spectrograms');
+
+% Parameters for spectrogram computation
+windowSize = 1024;
+overlap = 0.5;
+
+% Get a list of all WAV files in the directory
+wavFiles = dir(fullfile(inDir, '*.wav'));
+
+for i = 1:length(wavFiles)
+    % Load the audio file
+    filename = fullfile(inDir, wavFiles(i).name);
+    [audio, fs] = audioread(filename);
+    
+    % Compute the spectrogram
+    [S, F, T] = spectrogram(audio(:,1), windowSize, round(windowSize * overlap), windowSize, fs);
+    
+    [outDir, name, ext] = fileparts(wavFiles(i).name);
+    [~, name, ~] = fileparts(wavFiles(i).name);
+    figureFileName = fullfile(outDir, sprintf('spectrogram_%s.png', strrep(name, '.', '_')));
+    saveas(gcf, figureFileName);
+
+    % Plot the spectrogram
+    figure;
+    imagesc(T, F, 10*log10(abs(S)));
+    axis xy;
+    xlabel('Time (s)');
+    ylabel('Frequency (Hz)');
+    title(sprintf('Spectrogram of %s', wavFiles(i).name));
+    colormap('default');
+    colorbar;
+
+end
+
+for i = 1:length(wavFiles)
+    % Construct the full file path
+    filePath = fullfile(inDir, wavFiles(i).name);
+
+    % Load the audio file
+    [y, Fs] = audioread(filePath);
+
+    % Compute the spectrogram
+    window = hamming(512); % Window function (you can try others like hann, blackman, etc.)
+    noverlap = 256; % Number of overlapping samples
+    nfft = 1024; % Number of FFT points
+    [~, F, T, P] = spectrogram(y(:,1), window, noverlap, nfft, Fs, 'yaxis');
+
+    % Plot the spectrogram
+    figure;
+    surf(T, F, 10*log10(P), 'edgecolor', 'none');
+    axis xy; axis tight;
+    view(0, 90);
+    colormap(jet);
+    xlabel('Time (s)');
+    ylabel('Frequency (Hz)');
+    title(['Spectrogram of ', wavFiles(i).name]);
+end
+% 
+% % Process (Iteration)
+% for i = 1:length(audioFiles)
+% 
+%     audioFileName = fullfile(inDir, audioFiles(i).name);
+%     [audio, fs] = audioread(audioFileName);
+% 
+%     [s, w, t] = spectrogram(audio(:, 1), win, overlap, nfft);
+%     s = abs(s(1:nrows, :));
+% 
+%     [c, idx] = max(s);
+% 
+%     % Write matrix to file
+%     % outputFileName = writematrix(audioFiles(i), 'max_matrix_%s.txt' )
+%     % [outDir, name, ext] = fileparts(audioFiles(i).name));
+%     [~, name, ~] = fileparts(audioFiles(i).name);
+% 
+%     figure;
+%     imagesc(t, w, s);
+%     title(['Spectrogram for ', audioFiles(i).name]);
+%     xlabel('Time (s)');
+%     ylabel('Frequency (Hz)');
+%     colorbar;
+% 
+%     % Save the figure as an image
+%     figureFileName = fullfile(outDir, sprintf('spectrogram_%s.png', strrep(name, '.', '_')));
+%     saveas(gcf, figureFileName);
+% 
+% end
+
+

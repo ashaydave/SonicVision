@@ -34,6 +34,10 @@ for i = 1:length(wavFiles)
     ylabel('Frequency (Hz)');
     title(['Spectrogram of ', wavFiles(i).name]);
 
+    % Save spectrograms
+    spectrogramFileName = fullfile(outDir, sprintf('spectrogram_%s.png', strrep(wavFiles(i).name, '.', '_')));
+    saveas(gcf, spectrogramFileName);
+
     % Compute the absolute FFT
     Y = abs(fft(y(:,1), nfft));
     f = Fs*(0:(nfft/2))/nfft;
@@ -45,9 +49,7 @@ for i = 1:length(wavFiles)
     ylabel('Magnitude (dB)');
     title(['Absolute FFT of ', wavFiles(i).name]);
 
-    % Save spectrograms and plots
-    spectrogramFileName = fullfile(outDir, sprintf('spectrogram_%s.png', strrep(wavFiles(i).name, '.', '_')));
-    saveas(gcf, spectrogramFileName);
+    % Save plots
     fftFileName = fullfile(outDir, sprintf('fft_%s.png', strrep(wavFiles(i).name, '.', '_')));
     saveas(gcf, fftFileName);
 end

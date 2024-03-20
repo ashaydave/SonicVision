@@ -1,4 +1,4 @@
-#N canvas 177 238 1920 1136 10;
+#N canvas 123 232 1920 1136 10;
 #X obj 253 148 bng 15 250 50 0 empty empty empty 0 -6 0 8 #fcfcfc #000000 #000000;
 #X obj 475 383 dac~;
 #X obj 253 167 t b b b b;
@@ -20,8 +20,8 @@
 #X obj 272 290 del 90;
 #X obj 474 246 delwrite~ body 150;
 #X obj 474 266 delread~ body 150;
-#X obj 488 316 bp~ 1000 50;
 #X obj 474 357 *~ 5;
+#X obj 488 316 bp~ 1000 100;
 #X connect 0 0 2 0;
 #X connect 2 0 12 0;
 #X connect 2 1 18 0;
@@ -40,6 +40,6 @@
 #X connect 17 0 5 0;
 #X connect 18 0 16 0;
 #X connect 20 0 11 0;
-#X connect 21 0 10 0;
-#X connect 22 0 1 0;
-#X connect 22 0 1 1;
+#X connect 21 0 1 0;
+#X connect 21 0 1 1;
+#X connect 22 0 10 0;

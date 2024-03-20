@@ -6,8 +6,8 @@ public class SendToBang : MonoBehaviour
 {
     public LibPdInstance pdPatch;
 
-    private void Update()
+    private void Start()
     {
-        pdPatch.SendSymbol("speed","50");
+        pdPatch.SendBang("start");
     }
 }
